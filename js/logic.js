@@ -240,7 +240,7 @@ function updatePlayer(dt) {
   if (keys.up) iy -= 1;
   if (keys.down) iy += 1;
 
-  // スマホ：画面のスティックで操作しているときはそちらの向きを使う（touch.js）
+  // スマホ：十字ボタンを押しているときはそちらの向きを使う（touch.js）
   if (touch.active) {
     ix = touch.x;
     iy = touch.y;
@@ -272,7 +272,7 @@ function updatePlayer(dt) {
   p.vy *= keep;
 
   // 最高速度を超えないようにする（Shift、またはスティックを小さく倒すとしのび足）
-  p.sneaking = keys.sneak || (touch.active && touch.sneak);
+  p.sneaking = keys.sneak || touch.sneak; // Shift、またはスマホのしのび足ボタン
   const maxSpeed = p.sneaking ? CONFIG.SNEAK_SPEED : CONFIG.MAX_SPEED;
   const speed = Math.hypot(p.vx, p.vy);
   if (speed > maxSpeed) {

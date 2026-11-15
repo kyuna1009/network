@@ -1,28 +1,30 @@
 // =====================================================
 //  スマホ（タッチ操作）
-//  ・画面のどこでもドラッグすると、触った場所にスティックが出る
-//    （縦向きなら迷路の下の空いている所、横向きなら左右の空いている所で操作できる）
-//    小さく倒す → しのび足 / 大きく倒す → 走る
-//  ・右下の「閃光」ボタンで閃光
+//  ・左下の十字ボタン：押している間その方向に進む
+//    （指をすべらせて向きを変えたり、斜めに押したりもできる）
+//  ・右下の「しのび足」ボタン：押すたびにオン・オフ
+//  ・右下の「閃光」ボタン：閃光を使う
 // =====================================================
 
-// スティックの状態（logic.js の updatePlayer が読む）
+// タッチ操作の状態（logic.js の updatePlayer が読む）
 const touch = {
-  active: false, // スティックを操作中か
+  active: false, // 十字ボタンを押しているか
   x: 0,          // 向き（-1〜1）
   y: 0,
-  sneak: false,  // 小さく倒している＝しのび足
-  id: null,      // 操作している指の番号
-  ox: 0,         // スティックの中心（画面上の位置）
-  oy: 0,
+  sneak: false,  // しのび足がオンか
+  id: null,      // 十字ボタンを押している指の番号
 };
 
-const JOY_RADIUS = 50;   // スティックを倒しきるまでの距離(px)
-const JOY_DEAD = 0.15;   // これより小さい倒し方は「止まる」
-const JOY_SNEAK = 0.55;  // これより小さい倒し方は「しのび足」
+const DPAD_DEAD = 0.25;  // 十字ボタンの中心付近（この割合より内側）は「止まる」
 
-const joyBase = document.getElementById('joy-base');
-const joyKnob = document.getElementById('joy-knob');
+const dpad = document.getElementById('dpad');
+const dpadBtns = {
+  up: dpad.querySelector('[data-dir="up"]'),
+  down: dpad.querySelector('[data-dir="down"]'),
+  left: dpad.querySelector('[data-dir="left"]'),
+  right: dpad.querySelector('[data-dir="right"]'),
+};
+const sneakBtn = document.getElementById('sneak-btn');
 const flashBtn = document.getElementById('flash-btn');
 
 // ※ iPhone(Safari)では指のリスト(TouchList)に for...of が使えないことがあるので、
@@ -34,81 +36,99 @@ function findTouch(list, id) {
   return null;
 }
 
+// 押している方向のボタンを光らせる
+function showDpad() {
+  dpadBtns.up.classList.toggle('on', touch.y < 0);
+  dpadBtns.down.classList.toggle('on', touch.y > 0);
+  dpadBtns.left.classList.toggle('on', touch.x < 0);
+  dpadBtns.right.classList.toggle('on', touch.x > 0);
+}
+
+// 指の位置（十字ボタンの中心からのずれ）で向きを決める
+function setDirFromPoint(clientX, clientY) {
+  const r = dpad.getBoundingClientRect();
+  const dx = clientX - (r.left + r.width / 2);
+  const dy = clientY - (r.top + r.height / 2);
+  const half = r.width / 2;
+  const ax = Math.abs(dx);
+  const ay = Math.abs(dy);
+  if (Math.max(ax, ay) < half * DPAD_DEAD) {
+    touch.x = 0;
+    touch.y = 0;
+  } else if (ax > ay * 2) {        // ほぼ横 → 左右だけ
+    touch.x = Math.sign(dx); touch.y = 0;
+  } else if (ay > ax * 2) {        // ほぼ縦 → 上下だけ
+    touch.x = 0; touch.y = Math.sign(dy);
+  } else {                         // 斜め
+    touch.x = Math.sign(dx); touch.y = Math.sign(dy);
+  }
+  showDpad();
+}
+
+// ゲーム開始時などにリセット（main.js から呼ぶ）
 function resetStick() {
   touch.active = false;
   touch.id = null;
   touch.x = 0;
   touch.y = 0;
   touch.sneak = false;
-  joyBase.classList.add('hidden');
-  joyKnob.style.transform = 'translate(-50%, -50%)';
+  sneakBtn.classList.remove('on');
+  showDpad();
 }
 
-// 指を置いた場所にスティックを出す
-document.addEventListener('touchstart', (ev) => {
-  if (state !== 'playing') return; // タイトル・結果画面ではボタンを押せるようにする
-  ev.preventDefault();             // スクロールや拡大を防ぐ
-  // 指を離した合図を取りこぼしていたら（もう画面にその指がないなら）リセットする
-  if (touch.id !== null && !findTouch(ev.touches, touch.id)) resetStick();
-  if (touch.id !== null) return;   // すでにスティック操作中
-  for (let i = 0; i < ev.changedTouches.length; i++) {
-    const t = ev.changedTouches[i];
-    if (t.target === flashBtn) continue;
-    touch.id = t.identifier;
-    touch.ox = t.clientX;
-    touch.oy = t.clientY;
-    touch.active = true;
-    joyBase.style.left = touch.ox + 'px';
-    joyBase.style.top = touch.oy + 'px';
-    joyBase.classList.remove('hidden');
-    break;
-  }
+// ---- 十字ボタン ----
+dpad.addEventListener('touchstart', (ev) => {
+  ev.preventDefault();
+  if (state !== 'playing') return;
+  if (touch.id !== null && findTouch(ev.touches, touch.id)) return; // すでに別の指で操作中
+  const t = ev.changedTouches[0];
+  touch.id = t.identifier;
+  touch.active = true;
+  setDirFromPoint(t.clientX, t.clientY);
 }, { passive: false });
 
-// 指を動かした方向と距離で、向きと速さを決める
-document.addEventListener('touchmove', (ev) => {
-  if (touch.id === null) return;
+dpad.addEventListener('touchmove', (ev) => {
   ev.preventDefault();
+  if (touch.id === null) return;
   const t = findTouch(ev.changedTouches, touch.id);
-  if (!t) return;
+  if (t) setDirFromPoint(t.clientX, t.clientY); // 指をすべらせると向きが変わる
+}, { passive: false });
 
-  let dx = t.clientX - touch.ox;
-  let dy = t.clientY - touch.oy;
-  const dist = Math.hypot(dx, dy);
-  if (dist > JOY_RADIUS) {
-    dx = (dx / dist) * JOY_RADIUS;
-    dy = (dy / dist) * JOY_RADIUS;
-  }
-  joyKnob.style.transform = `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px))`;
-
-  const amount = Math.min(1, dist / JOY_RADIUS); // 倒した量 0〜1
-  if (amount < JOY_DEAD) {
+function endDpad(ev) {
+  if (touch.id === null) return;
+  if (findTouch(ev.changedTouches, touch.id)) {
+    touch.active = false;
+    touch.id = null;
     touch.x = 0;
     touch.y = 0;
-  } else {
-    // 迷路は上下左右の通路なので、ほぼまっすぐなら上下左右にそろえる
-    const ax = Math.abs(dx);
-    const ay = Math.abs(dy);
-    if (ax > ay * 2) { touch.x = Math.sign(dx); touch.y = 0; }
-    else if (ay > ax * 2) { touch.x = 0; touch.y = Math.sign(dy); }
-    else { touch.x = dx / dist; touch.y = dy / dist; }
+    showDpad();
   }
-  touch.sneak = amount < JOY_SNEAK;
-}, { passive: false });
-
-function endTouch(ev) {
-  if (touch.id === null) return;
-  if (findTouch(ev.changedTouches, touch.id)) resetStick();
 }
-document.addEventListener('touchend', endTouch);
-document.addEventListener('touchcancel', endTouch);
+dpad.addEventListener('touchend', endDpad);
+dpad.addEventListener('touchcancel', endDpad);
 
-// 閃光ボタン
+// ---- しのび足ボタン（押すたびにオン・オフ）----
+function toggleSneak() {
+  if (state !== 'playing') return;
+  touch.sneak = !touch.sneak;
+  sneakBtn.classList.toggle('on', touch.sneak);
+}
+sneakBtn.addEventListener('touchstart', (ev) => {
+  ev.preventDefault();
+  toggleSneak();
+}, { passive: false });
+sneakBtn.addEventListener('click', toggleSneak);
+
+// ---- 閃光ボタン ----
 flashBtn.addEventListener('touchstart', (ev) => {
   ev.preventDefault();
-  ev.stopPropagation(); // スティックが出ないようにする
   if (state === 'playing') useFlash();
 }, { passive: false });
 flashBtn.addEventListener('click', () => {
   if (state === 'playing') useFlash();
 });
+
+// 遊んでいる間、画面がスクロールしたり拡大したりしないようにする
+document.addEventListener('touchmove', (ev) => {
+  if (state === 'playing') ev.preventDefault();
+}, { passive: false });

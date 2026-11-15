@@ -60,7 +60,8 @@ function startGame() {
   hideScreens();
   resetStick();
   state = 'playing';
-  document.body.classList.add('playing'); // スマホの閃光ボタンを表示する
+  document.body.classList.add('playing'); // スマホのボタンを表示する
+  fitStage(); // ボタンの場所を空けて、ゲーム画面の大きさを合わせ直す
 }
 
 // ---- ゲーム終了（クリア or ゲームオーバー）----
@@ -68,6 +69,7 @@ function endGame(cleared, reason) {
   if (state !== 'playing') return;
   state = 'result';
   document.body.classList.remove('playing');
+  fitStage();
   game.player.vx = 0;
   game.player.vy = 0;
   game.messageTime = 0;

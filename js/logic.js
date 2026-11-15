@@ -271,7 +271,7 @@ function updatePlayer(dt) {
   p.vx *= keep;
   p.vy *= keep;
 
-  // 最高速度を超えないようにする（Shift、またはスティックを小さく倒すとしのび足）
+  // 最高速度を超えないようにする（しのび足のときは遅くする）
   p.sneaking = keys.sneak || touch.sneak; // Shift、またはスマホのしのび足ボタン
   const maxSpeed = p.sneaking ? CONFIG.SNEAK_SPEED : CONFIG.MAX_SPEED;
   const speed = Math.hypot(p.vx, p.vy);

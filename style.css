@@ -10,9 +10,9 @@
   --danger: #ff5a5a; /*危険状態の赤*/
   --goal: #6ff0d8; /*ゴール・クリアの青*/
 }
-
+ 
 * { box-sizing: border-box; } /*幅にpaddingと枠線を含める*/
-
+ 
 html, body {
   margin: 0; /*余白なし*/
   height: 100%; /*画面の高さに合わせる*/
@@ -20,19 +20,19 @@ html, body {
   color: var(--text); /*文字は基本色*/
   font-family: "Hiragino Kaku Gothic ProN", "Yu Gothic UI", "Yu Gothic", "Meiryo", sans-serif; /*フォント設定*/
 }
-
+ 
 body { /*画面を中央に置くための設定*/
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 16px;
 }
-
+ 
 .wrap { /*全体の外枠、基本は横幅いっぱいだが上限も設定*/
   width: 100%;
   max-width: 864px;
 }
-
+ 
 /* ---- HUD ---- */
 .hud { /*ステータスバーの部分*/
   display: flex;
@@ -45,14 +45,14 @@ body { /*画面を中央に置くための設定*/
   border-radius: 10px; /*角を丸く*/
   font-variant-numeric: tabular-nums; /*数字の幅を揃える*/
 }
-
+ 
 .hud-item { display: flex; align-items: center; gap: 10px; } /*ラベルと値の組を横並びにして、間隔は10pt*/
 .hud-label { font-size: 12px; color: var(--muted); letter-spacing: 0.1em; } /*ラベルは灰色で、字の間隔を少し広げる*/
 .hud-value { font-size: 18px; font-weight: 700; min-width: 3.5em; } /*数字は太字で、最低値を決める*/
 .hud-value.small { font-size: 13px; color: var(--muted); font-weight: 400; min-width: 3em; } /*薄めの文字の設定*/
 .hud-life { font-size: 20px; color: var(--danger); letter-spacing: 2px; } /*ライフを表すハート*/
 .hud-flash { font-size: 18px; color: var(--amber); letter-spacing: 3px; } /*閃光の残り*/
-
+ 
 .meter { /*光のメーターの枠*/
   width: 120px;
   height: 8px;
@@ -66,7 +66,7 @@ body { /*画面を中央に置くための設定*/
   background: linear-gradient(90deg, var(--amber-dim), var(--amber)); /*グラデーション*/
   border-radius: 4px;
 }
-
+ 
 .hud-mode { /*しのび足、追われているの表示など*/
   margin-left: auto; /*右寄せ*/
   font-size: 13px;
@@ -74,7 +74,7 @@ body { /*画面を中央に置くための設定*/
   min-width: 6em; /*文字エリアを確保*/
   text-align: right; /*右寄せ*/
 }
-
+ 
 /* ---- ゲーム画面 ---- */
 .stage {
   position: relative; /*screenを、この画面を基準に重ねる時用*/
@@ -83,13 +83,13 @@ body { /*画面を中央に置くための設定*/
   overflow: hidden; /*キャンパスからはみ出ないように*/
   background: #000; /*キャンパスが描かれる前を黒に*/
 }
-
+ 
 canvas {
   display: block; /*隙間防止*/
   width: 100%; /*横幅に合わせる*/
   height: auto; /*縦横比を保ったまま、高さを決める*/
 }
-
+ 
 /* ---- タイトル・結果画面 ---- */
 .screen {
   position: absolute;  /*.stageを基準に置く*/
@@ -103,7 +103,7 @@ canvas {
   background: radial-gradient(circle at 50% 45%, rgba(60, 35, 10, 0.55), rgba(4, 3, 6, 0.96) 60%);  /*ランタンをイメージした背景*/
 }
 .screen.hidden { display: none; }/* hiddenクラスが付いたら非表示（JSで付け外しして画面を切り替える）*/
-
+ 
 .logo { /*タイトルロゴ*/
   margin: 0 0 8px; /*下に8pxの余白*/
   font-family: "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", serif;
@@ -113,7 +113,7 @@ canvas {
   text-shadow: 0 0 24px rgba(255, 170, 60, 0.6);  /*字をぼんやり光らせる*/
 }
 .lead { margin: 0 0 20px; color: var(--muted); } /*タイトル下の説明文は灰色で、下に余白をつける*/
-
+ 
 .rules { /*ルール説明部分*/
   list-style: none; /*・を消す*/
   margin: 0 0 18px; /*下のみ余白*/
@@ -124,7 +124,7 @@ canvas {
 }
 .rules li::before { content: "◆ "; color: var(--amber-dim); } /*ルールの頭に◆をつける*/
 .rules em { font-style: normal; color: var(--danger); } /*普通の書体で、赤文字に*/
-
+ 
 .keys { color: var(--muted); font-size: 13px; margin: 0 0 22px; } /*操作説明の行*/
 kbd { /*キー表示*/
   display: inline-block; /*文中でも余白や枠をつけられるようにする*/
@@ -137,7 +137,7 @@ kbd { /*キー表示*/
   font-family: inherit; /*フォントは親と同じ*/
   font-size: 12px;
 }
-
+ 
 .btn { /*スタート、もう一度などのボタン*/
   padding: 12px 36px; /*余白、横長*/
   border: 1px solid var(--amber);
@@ -152,7 +152,7 @@ kbd { /*キー表示*/
 }
 .btn:hover, .btn:focus-visible { background: var(--amber); color: #1a1008; outline: none; } /*選択状態の時、色を反転させる*/
 .btn-sub { font-size: 11px; font-weight: 400; opacity: 0.7; margin-left: 6px; } /*小さく半透明で、補足*/
-
+ 
 .result-title { /*結果表示*/
   margin: 0 0 10px;
   font-size: 48px;
@@ -162,32 +162,32 @@ kbd { /*キー表示*/
 .result-title.over { color: var(--danger); text-shadow: 0 0 20px rgba(255, 90, 90, 0.45); } /*ゲームオーバーなら赤く光る*/
 .result-text { margin: 0 0 24px; font-size: 18px; line-height: 1.7; } /*タイムなどの結果内容*/
 .note { margin: 16px 0 0; font-size: 12px; color: var(--muted); } /*小さい注意書き*/
-
+ 
 /* ---- 鍵（HUD） ---- */
 .hud-key { font-size: 13px; color: var(--muted); } /*鍵がない時の表示*/
 .hud-key.got { color: #ffd75a; font-weight: 700; } /*鍵を拾うと、金色の太字になる*/
-
+ 
 /* ---- ランク評価 ---- */
 .result-rank { /*ランクの文字と点数表が入った部分*/
   display: flex; /*ランク文字と表を横並び*/
-  align-items: center;
-  gap: 28px;
-  margin: -8px 0 22px;
+  align-items: center; /*縦方向の中央でそろえる*/
+  gap: 28px; /*文字と表の間隔*/
+  margin: -8px 0 22px; /*上をマイナスにしてタイトルに寄せ、下に余白*/
 }
 .result-rank.hidden { display: none; }  /*ゲームオーバーの時は隠す*/
-
-.rank-letter {
+ 
+.rank-letter { /*大きなランク文字（S/A/B/C）*/
   font-family: "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", serif;
   font-size: 96px;
   font-weight: 700;
-  line-height: 1;
-  width: 1.1em;
+  line-height: 1; /*行の高さを文字ぴったりにして、上下の余計な余白をなくす*/
+  width: 1.1em; /*幅を固定して、SでもCでも表の位置がずれないように*/
 }
 .rank-S { color: #ffd75a; text-shadow: 0 0 28px rgba(255, 215, 90, 0.7); } /* S：金色で一番強く光る */
 .rank-A { color: var(--goal); text-shadow: 0 0 22px rgba(111, 240, 216, 0.5); } /* A：青緑で光る */
 .rank-B { color: #9fb4ff; } /* B：青、光なし */
 .rank-C { color: var(--muted); } /* C：灰色で地味に */
-
+ 
 .rank-table { /* 点数の内訳表 */
   border-collapse: collapse; /* セルの枠線を1本にまとめる */
   font-size: 14px;
@@ -202,158 +202,159 @@ kbd { /*キー表示*/
   font-weight: 700;
   color: var(--amber);
 }
-
+ 
 /* ---- スマホ（タッチ操作） ---- */
-.touch-only { display: none; }
-
+.touch-only { display: none; } /*スマホ専用の部品は、最初は隠しておく（スマホのときだけ下の@mediaで表示）*/
+ 
 body.playing { touch-action: none; } /* 遊んでいる間はスクロール・拡大しない */
 .stage {
   touch-action: none;              /* ドラッグでスクロール・拡大しない */
-  -webkit-user-select: none;
-  user-select: none;
+  -webkit-user-select: none;       /*下と同じ意味の、iPhone(Safari)用の書き方*/
+  user-select: none;               /*長押しやドラッグで、文字や画面が選択（青く反転）されないように*/
   -webkit-touch-callout: none;     /* 長押しメニューを出さない */
 }
-
+ 
 /* 十字ボタン（左下） */
 .dpad {
   position: fixed;
-  z-index: 5;
-  left: max(16px, env(safe-area-inset-left));
-  bottom: max(16px, env(safe-area-inset-bottom));
-  width: 150px;
+  z-index: 5; /*重なり順。数字が大きいほど手前に出る（迷路より上に表示）*/
+  left: max(16px, env(safe-area-inset-left)); /*左から16px。ただしiPhoneのノッチや角の丸みがある時はその分よける（大きい方を使う）*/
+  bottom: max(16px, env(safe-area-inset-bottom)); /*下から16px。iPhoneのホームバーがある時はその分よける*/
+  width: 150px; /*十字ボタン全体の大きさ（この四角の中で判定する）*/
   height: 150px;
-  -webkit-tap-highlight-color: transparent;
+  -webkit-tap-highlight-color: transparent; /*タップした時に出る灰色や青のハイライトを消す*/
 }
-.dpad-btn {
-  position: absolute;
+.dpad-btn { /*上下左右それぞれのボタン*/
+  position: absolute; /*.dpadの四角の中で、上下左右に配置するため*/
   width: 52px;
   height: 52px;
-  display: flex;
+  display: flex; /*矢印の文字をボタンの真ん中に置く*/
   align-items: center;
   justify-content: center;
   border-radius: 12px;
-  border: 2px solid rgba(255, 181, 74, 0.6);
-  background: rgba(40, 24, 8, 0.7);
+  border: 2px solid rgba(255, 181, 74, 0.6); /*半透明のオレンジの枠*/
+  background: rgba(40, 24, 8, 0.7); /*半透明の暗い茶色（後ろが少し透ける）*/
   color: var(--amber);
   font-size: 18px;
   pointer-events: none;            /* 判定は十字ボタン全体（touch.js）で行う */
 }
-.dpad-up    { left: 49px; top: 0; }
-.dpad-down  { left: 49px; bottom: 0; }
-.dpad-left  { left: 0; top: 49px; }
-.dpad-right { right: 0; top: 49px; }
-.dpad-btn.on { background: var(--amber); color: #1a1008; }
-
+.dpad-up    { left: 49px; top: 0; } /*上ボタン：横の真ん中（(150-52)÷2＝49）、一番上*/
+.dpad-down  { left: 49px; bottom: 0; } /*下ボタン：横の真ん中、一番下*/
+.dpad-left  { left: 0; top: 49px; } /*左ボタン：縦の真ん中、一番左*/
+.dpad-right { right: 0; top: 49px; } /*右ボタン：縦の真ん中、一番右*/
+.dpad-btn.on { background: var(--amber); color: #1a1008; } /*押している方向のボタンは色を反転（touch.jsでonを付け外し）*/
+ 
 /* しのび足ボタン（閃光ボタンの上） */
 .sneak-btn {
   position: fixed;
-  z-index: 5;
-  right: max(16px, env(safe-area-inset-right));
-  bottom: calc(max(16px, env(safe-area-inset-bottom)) + 90px);
+  z-index: 5; /*迷路より手前に*/
+  right: max(16px, env(safe-area-inset-right)); /*右から16px（ノッチがあればよける）*/
+  bottom: calc(max(16px, env(safe-area-inset-bottom)) + 90px); /*閃光ボタンの位置からさらに90px上（重ならないように）*/
   width: 76px;
   height: 76px;
-  border-radius: 50%;
+  border-radius: 50%; /*正方形を50%で丸めると円になる*/
   border: 2px solid var(--goal);
-  background: rgba(8, 30, 28, 0.7);
+  background: rgba(8, 30, 28, 0.7); /*半透明の暗い青緑*/
   color: var(--goal);
-  font: inherit;
+  font: inherit; /*フォントは親に合わせる*/
   font-size: 13px;
   font-weight: 700;
-  line-height: 1.25;
-  -webkit-tap-highlight-color: transparent;
+  line-height: 1.25; /*2行になる文字の行間を詰める*/
+  -webkit-tap-highlight-color: transparent; /*タップ時のハイライトを消す*/
 }
-.sneak-btn.on { background: var(--goal); color: #06201c; }
-
+.sneak-btn.on { background: var(--goal); color: #06201c; } /*しのび足中は色を反転*/
+ 
 .flash-btn {
   position: fixed;               /* 迷路の外（画面の右下）に置き、出口を隠さない */
-  z-index: 5;
-  right: max(16px, env(safe-area-inset-right));
-  bottom: max(16px, env(safe-area-inset-bottom));
+  z-index: 5; /*迷路より手前に*/
+  right: max(16px, env(safe-area-inset-right)); /*右から16px（ノッチがあればよける）*/
+  bottom: max(16px, env(safe-area-inset-bottom)); /*下から16px（ホームバーがあればよける）*/
   width: 76px;
   height: 76px;
-  border-radius: 50%;
+  border-radius: 50%; /*円にする*/
   border: 2px solid var(--amber);
-  background: rgba(40, 24, 8, 0.7);
+  background: rgba(40, 24, 8, 0.7); /*半透明の暗い茶色*/
   color: var(--amber);
-  font: inherit;
+  font: inherit; /*フォントは親に合わせる*/
   font-size: 14px;
   font-weight: 700;
-  line-height: 1.2;
-  -webkit-tap-highlight-color: transparent;
+  line-height: 1.2; /*「閃光」と残り回数の2行の行間を詰める*/
+  -webkit-tap-highlight-color: transparent; /*タップ時のハイライトを消す*/
 }
-.flash-btn:active { background: var(--amber); color: #1a1008; }
-.flash-btn.empty { opacity: 0.3; }
-.flash-btn-count { display: block; font-size: 18px; }
-
+.flash-btn:active { background: var(--amber); color: #1a1008; } /*押している間だけ色を反転*/
+.flash-btn.empty { opacity: 0.3; } /*閃光を使い切ったら薄くして、押せない感じにする*/
+.flash-btn-count { display: block; font-size: 18px; } /*残り回数。blockにすると「閃光」の下の行に改行される*/
+ 
 /* タッチ操作の端末（スマホ・タブレット） */
-@media (hover: none) and (pointer: coarse) {
-  .key-only { display: none; }
-  .touch-only { display: block; }
-  .flash-btn.touch-only, .sneak-btn.touch-only, .dpad.touch-only { display: none; }
+@media (hover: none) and (pointer: coarse) { /*マウスがなく（ホバーできない）、指で操作する端末のときだけ*/
+  .key-only { display: none; } /*キーボード操作の説明は隠す*/
+  .touch-only { display: block; } /*スマホ用の説明などを表示する*/
+  .flash-btn.touch-only, .sneak-btn.touch-only, .dpad.touch-only { display: none; } /*ただしボタン類はタイトル画面では隠しておく*/
   body.playing .flash-btn.touch-only,
   body.playing .sneak-btn.touch-only,
-  body.playing .dpad.touch-only { display: block; }
-
+  body.playing .dpad.touch-only { display: block; } /*ゲーム中（bodyにplayingクラスが付いている間）だけボタンを表示*/
+ 
   /* タイトル・結果画面は小さいゲーム画面に入りきらないので、画面全体に出す */
   .screen {
-    position: fixed;
-    z-index: 10;
+    position: fixed; /*ゲーム画面の枠ではなく、スマホの画面全体を基準にする*/
+    z-index: 10; /*ボタン（5）よりも手前に出す*/
     background:
-      radial-gradient(circle at 50% 45%, rgba(60, 35, 10, 0.55), rgba(4, 3, 6, 0) 60%),
+      radial-gradient(circle at 50% 45%, rgba(60, 35, 10, 0.55), rgba(4, 3, 6, 0) 60%), /*上の層：ランタンっぽい光*/
       var(--bg);                   /* 後ろのゲーム画面が透けないように */
-    overflow-y: auto;
-    justify-content: safe center;
+    overflow-y: auto; /*内容が入りきらない時は、縦にスクロールできるようにする*/
+    justify-content: safe center; /*基本は中央寄せ。ただし入りきらない時は上が切れないように上から並べる*/
   }
 }
-
+ 
 /* 遊んでいる間はボタンの場所を空ける（迷路にボタンが重ならないように） */
-@media (hover: none) and (pointer: coarse) and (orientation: portrait) {
-  body.playing { padding-bottom: calc(190px + env(safe-area-inset-bottom)); }
+@media (hover: none) and (pointer: coarse) and (orientation: portrait) { /*スマホを縦向きにしている時*/
+  body.playing { padding-bottom: calc(190px + env(safe-area-inset-bottom)); } /*下にボタン分（190px）＋ホームバー分の空きを作り、迷路を上に寄せる*/
 }
-@media (hover: none) and (pointer: coarse) and (orientation: landscape) {
-  body.playing { padding-left: 180px; padding-right: 180px; }
+@media (hover: none) and (pointer: coarse) and (orientation: landscape) { /*スマホを横向きにしている時*/
+  body.playing { padding-left: 180px; padding-right: 180px; } /*左右にボタン用の空きを作る（左に十字、右に閃光・しのび足）*/
 }
-
+ 
 /* 画面が狭いとき（スマホ） */
-@media (max-width: 700px), (max-height: 500px) {
-  body { padding: 8px; }
+@media (max-width: 700px), (max-height: 500px) { /*画面の幅が700px以下、または高さが500px以下の時（カンマは「または」）*/
+  body { padding: 8px; } /*周りの余白を減らして画面を広く使う*/
   .hud {
-    flex-wrap: wrap;
-    gap: 6px 14px;
-    padding: 6px 10px;
+    flex-wrap: wrap; /*1行に入りきらない項目は次の行に折り返す*/
+    gap: 6px 14px; /*縦の間隔6px、横の間隔14px*/
+    padding: 6px 10px; /*内側の余白を小さく*/
     margin-bottom: 6px;
   }
   .hud-value { font-size: 15px; min-width: 2.8em; }
   .hud-life { font-size: 16px; }
   .hud-flash { font-size: 15px; }
-  .meter { width: 60px; }
-  .hud-value.small { display: none; }
-  .hud-mode { min-width: 0; font-size: 12px; }
-
-  .logo { font-size: clamp(36px, 11vw, 64px); }
+  .meter { width: 60px; } /*光メーターを半分の長さに*/
+  .hud-value.small { display: none; } /*光の「40px」の数字は省略して場所を空ける*/
+  .hud-mode { min-width: 0; font-size: 12px; } /*文字エリアの確保をやめて、場所を節約*/
+ 
+  .logo { font-size: clamp(36px, 11vw, 64px); } /*画面幅の11%の大きさ（vw＝画面幅の1%）。ただし最小36px・最大64px*/
   .lead { font-size: 13px; margin-bottom: 12px; }
-  .rules { font-size: 12.5px; line-height: 1.7; margin-bottom: 12px; }
+  .rules { font-size: 12.5px; line-height: 1.7; margin-bottom: 12px; } /*行間も少し詰める*/
   .keys { margin-bottom: 14px; line-height: 1.7; }
   .result-title { font-size: 36px; }
   .result-text { font-size: 15px; margin-bottom: 14px; }
-  .result-rank { gap: 16px; margin: 0 0 14px; }
+  .result-rank { gap: 16px; margin: 0 0 14px; } /*ランク文字と表の間隔を小さく、上のマイナス余白もやめる*/
   .rank-letter { font-size: 64px; }
   .rank-table { font-size: 12.5px; }
 }
-
+ 
 /* ---- バージョン表示・エラー表示 ---- */
-.version { margin: 14px 0 0; font-size: 11px; color: var(--muted); opacity: 0.7; }
-.error-box {
+.version { margin: 14px 0 0; font-size: 11px; color: var(--muted); opacity: 0.7; } /*バージョン番号の表示。灰色をさらに薄くして目立たせない*/
+.error-box { /*エラーが起きた時に画面の上に出る赤い帯（スマホでも不具合に気づけるように）*/
   position: fixed;
-  left: 8px;
+  left: 8px; /*左と右の両方を指定すると、その間いっぱいに横に広がる*/
   right: 8px;
   top: 8px;
-  z-index: 100;
+  z-index: 100; /*何よりも手前に出す*/
   padding: 10px 12px;
   border-radius: 8px;
-  background: #5a1414;
+  background: #5a1414; /*暗い赤*/
   color: #fff;
   font-size: 13px;
   line-height: 1.5;
 }
-.error-box.hidden { display: none; }
+.error-box.hidden { display: none; } /*エラーがない時は隠す*/
+ 
